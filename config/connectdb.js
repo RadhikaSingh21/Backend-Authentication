@@ -1,15 +1,14 @@
-const mongoose = require("mongoose");
+module.exports = {
+  HOST: "localhost",
+  USER: "root",
+  PASSWORD: "2108",
+  DB: "medically",
+  dialect: "mysql",
 
-const connetDB = async (DATABASE_URL) => {
-  try {
-    const DB_OPTIONS = {
-      dbname: "Authentication",
-    };
-    await mongoose.connect(DATABASE_URL, DB_OPTIONS);
-    console.log("Connected Successfully..");
-  } catch (error) {
-    console.log(error);
-  }
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
 };
-
-module.exports = connetDB;

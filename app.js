@@ -1,26 +1,28 @@
-const dotenv = require("dotenv");
-dotenv.config();
 const express = require("express");
-const cors = require("cors");
-const connectDB = require("./config/connectdb");
-const UserRoutes = require("./routes/UserRoutes.js");
-
+const bodyParser = require("body-parser");
+const dotEnv = require("dotenv").config();
 const app = express();
-const port = process.env.PORT;
-const DATABASE_URL = process.env.DATABASE_URL;
+const cors = require("cors");
+require("./models/index");
 
-//CORS Policy
-app.use(cors());
+const Port = process.env.PORT || 3001;
 
-//DATABASE Connection
-connectDB(DATABASE_URL);
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
 
-//JSON
+app.use(cors(corsOptions));
+
+// parse the request body
 app.use(express.json());
 
-//Load Routes
-app.use("/api/user", UserRoutes);
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.listen(port, () => {
-  console.log(`Server listening at https://localhost:${port}`);
+// @Route (/user) is common route
+app.use("/user", require("./routes/userRoutes"));
+
+const server = app.listen(Port, () => {
+  console.log(`Server is running on port ${Port}`);
 });
